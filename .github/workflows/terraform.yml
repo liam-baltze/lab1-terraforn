@@ -35,11 +35,20 @@ jobs:
         uses: google-github-actions/auth@v2
         with:
           credentials_json: '${{ secrets.GCP_SA_KEY }}'
-      
+
       - uses: hashicorp/setup-terraform@v3
 
       - name: Terraform Init
         run: terraform init -backend=false
-        
+        env:
+          TF_VAR_project_id: ${{ secrets.GOOGLE_PROJECT }}
+          TF_VAR_region: ${{ secrets.GOOGLE_REGION }}
+          TF_VAR_zone: ${{ secrets.GOOGLE_ZONE }}
+
       - name: Terraform Validate
         run: terraform validate
+
+    env:
+      GOOGLE_PROJECT: chas-devsecops-2026
+      GOOGLE_REGION: europe-north1
+      GOOGLE_ZONE: europe-north1-a
